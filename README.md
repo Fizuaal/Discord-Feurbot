@@ -3,4 +3,4 @@
 
 Installer NodeJS, puis
 
-node Feurbot.js
+> node Feurbot.js
