@@ -3,4 +3,4 @@
 
 Installer NodeJS, puis
 
-> node Feurbot.js
+> fizuaal@pc#:node Feurbot.js
