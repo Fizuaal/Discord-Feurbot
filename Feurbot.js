@@ -1,4 +1,5 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const { Client, GatewayIntentBits } = require('discord.js')
 const client = new Client({
     intents: [
@@ -19,6 +20,7 @@ function randomReply(replies) {
 // \s*\?{0,6} permet de gérer de 0 à 6 points d'interrogation
 const responses = [
   { pattern: /(quoi|kois?|q(u)?wa)\s*\?{0,6}$/i, reply: ['Feur', 'Coubeh'] },
+  { pattern: /qui\s*\?{0,6}$/i, reply: 'quette' },
   { pattern: /comment\s*\?{0,6}$/i, reply: 'DanCousteau' },
   { pattern: /oui\s*\?{0,6}$/i, reply: 'Fi' },
   { pattern: /non\s*\?{0,6}$/i, reply: 'Bril' },
@@ -26,7 +28,7 @@ const responses = [
   { pattern: /qué\s*\?{0,6}$/i, reply: 'so' }
 ];
 
-client.on('ready', function () {
+client.once('clientReady', function () {
   console.log("Je suis connecté !")
 })
 
