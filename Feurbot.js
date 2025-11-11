@@ -18,14 +18,15 @@ function randomReply(replies) {
 // Le $ dans les regex assure qu'on vérifie bien la fin du message
 // reply peut être une chaîne ou un tableau de réponses possibles
 // \s*\?{0,6} permet de gérer de 0 à 6 points d'interrogation
+// \b assure qu'on matche le mot entier (évite de matcher "vide" pour "de")
 const responses = [
   { pattern: /(quoi|kois?|q(u)?wa)\s*\?{0,6}$/i, reply: ['Feur', 'Coubeh'] },
-  { pattern: /qui\s*\?{0,6}$/i, reply: 'quette' },
-  { pattern: /comment\s*\?{0,6}$/i, reply: 'DanCousteau' },
-  { pattern: /oui\s*\?{0,6}$/i, reply: 'Fi' },
-  { pattern: /non\s*\?{0,6}$/i, reply: 'Bril' },
-  { pattern: /de\s*\?{0,6}$/i, reply: 'ans d\'études à Montpellier' },
-  { pattern: /qué\s*\?{0,6}$/i, reply: 'so' }
+  { pattern: /\bqui\s*\?{0,6}$/i, reply: 'quette' },
+  { pattern: /\bcomment\s*\?{0,6}$/i, reply: 'DanCousteau' },
+  { pattern: /\boui\s*\?{0,6}$/i, reply: 'Fi' },
+  { pattern: /\bnon\s*\?{0,6}$/i, reply: 'Bril' },
+  { pattern: /\bde\s*\?{0,6}$/i, reply: 'ans d\'études à Montpellier' },
+  { pattern: /\bqué\s*\?{0,6}$/i, reply: 'so' }
 ];
 
 client.once('clientReady', function () {
