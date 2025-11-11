@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js')
 const client = new Client({
     intents: [
@@ -8,48 +8,39 @@ const client = new Client({
     ]
 })
 
+// Fonction pour choisir une réponse aléatoire dans un tableau
+function randomReply(replies) {
+  return replies[Math.floor(Math.random() * replies.length)];
+}
 
+// Structure de données pour les réponses automatiques
+// Le $ dans les regex assure qu'on vérifie bien la fin du message
+// reply peut être une chaîne ou un tableau de réponses possibles
+// \s*\?{0,6} permet de gérer de 0 à 6 points d'interrogation
+const responses = [
+  { pattern: /(quoi|kois?|q(u)?wa)\s*\?{0,6}$/i, reply: ['Feur', 'Coubeh'] },
+  { pattern: /comment\s*\?{0,6}$/i, reply: 'DanCousteau' },
+  { pattern: /oui\s*\?{0,6}$/i, reply: 'Fi' },
+  { pattern: /non\s*\?{0,6}$/i, reply: 'Bril' },
+  { pattern: /de\s*\?{0,6}$/i, reply: 'ans d\'études à Montpellier' },
+  { pattern: /qué\s*\?{0,6}$/i, reply: 'so' }
+];
 
 client.on('ready', function () {
   console.log("Je suis connecté !")
 })
 
-
-
-client.on('messageCreate', message =>{
-  // KOIS
-  if (message.content.endsWith('quoi ?') || message.content.endsWith('Quoi ?') || message.content.endsWith('Koi ?') || message.content.endsWith('Kois ?') || message.content.endsWith('kois ?') || message.content.endsWith('KOIS ?') || message.content.endsWith('koi ?')|| message.content.endsWith('KOI ?')) {
-    message.reply('Feur');
-  }
-  if (message.content.endsWith('quoi') || message.content.endsWith('Quoi') || message.content.endsWith('Koi') || message.content.endsWith('Kois') || message.content.endsWith('kois') || message.content.endsWith('KOIS') || message.content.endsWith('koi')|| message.content.endsWith('KOI')) {
-    message.reply('Feur');
-  }
-  if (message.content.endsWith('Qwa ?') || message.content.endsWith('qwa ?') || message.content.endsWith('QWA ?') || message.content.endsWith('Qwa') || message.content.endsWith('qwa') || message.content.endsWith('QWA')) {
-    message.reply('Feur');
-  }
-  if (message.content.endsWith('Quwa ?') || message.content.endsWith('quwa ?') || message.content.endsWith('QUWA ?') || message.content.endsWith('Quwa') || message.content.endsWith('quwa') || message.content.endsWith('QUWA')) {
-    message.reply('Feur');
-  }
-  if (message.content.endsWith('Kwa ?') || message.content.endsWith('kwa ?') || message.content.endsWith('KWA ?') || message.content.endsWith('Kwa') || message.content.endsWith('kwa') || message.content.endsWith('KWA')) {
-    message.reply('Feur');
-  }
-  // Comment ?
-  if (message.content.endsWith('Comment ?') || message.content.endsWith('comment ?') || message.content.endsWith('COMMENT ?') || message.content.endsWith('Comment') || message.content.endsWith('comment') || message.content.endsWith('COMMENT')) {
-    message.reply('DanCousteau');
-  }
-  if (message.content.endsWith('Oui') || message.content.endsWith('oui') || message.content.endsWith('OUI')) {
-    message.reply('Fi');
-  }
-  if (message.content.endsWith('Non') || message.content.endsWith('non') || message.content.endsWith('NON')) {
-    message.reply('Bril');
-  }
-  if (message.content.endsWith('De ?') || message.content.endsWith('de ?') || message.content.endsWith('DE ?')) {
-    message.reply('ans d\'études à Montpellier');
-  }
-  if (message.content.endsWith('Qué ?') || message.content.endsWith('qué ?') || message.content.endsWith('Qué') || message.content.endsWith('qué')) {
-    message.reply('so');
+client.on('messageCreate', message => {
+  // Parcourir toutes les réponses configurées
+  for (const { pattern, reply } of responses) {
+    if (pattern.test(message.content)) {
+      // Si reply est un tableau, choisir aléatoirement
+      const response = Array.isArray(reply) ? randomReply(reply) : reply;
+      message.reply(response);
+      break; // Arrêter après la première correspondance
+    }
   }
 });
 
 
-client.login('TOKEN');
+client.login(process.env.DISCORD_TOKEN);
